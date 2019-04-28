@@ -1,0 +1,64 @@
+body {
+  background-color: white;
+}
+
+h1 {
+  color: black;
+  text-align: center;
+}
+
+h2 {
+  color: black;
+  text-align: center;
+}
+
+h3 {
+  color: black;
+  text-align: center;
+  margin-left: 20%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+h4 {
+  color: black;
+  text-align: left;
+  margin-left: 20%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
+
+section:after{<!-- this after allows the footer goes after the afticle part -->
+ content: " abc";
+  display: table;
+  clear: both;
+}
+article{
+float: center;
+  padding: 20px;
+  width: 100%;
+  background-color: #f1f1f1;
+  height: 500px;
+  }
+  
+  
+footer {
+  background-color: #777;
+  padding: 30px;
+  text-align: left;
+  color: white;
+}
+
+.column {
+  float: left;
+  width: 25%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
