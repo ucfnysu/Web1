@@ -1,0 +1,714 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>The Atlas of Inequality</title>
+
+    <link rel="stylesheet" href="https://libs.cartocdn.com/airship-style/v1.0.4-rc.4/airship.css">
+    <link rel="stylesheet" href="https://libs.cartocdn.com/airship-icons/v1.0.4-rc.4/icons.css">
+
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css" rel="stylesheet" />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
+
+    <link rel='stylesheet' href='https://d33wubrfki0l68.cloudfront.net/bundles/71dbde1e9ecb56b361622d1777a8af5b068ef6c9.css'/>
+
+
+
+
+
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-polyfill"></script>
+
+    <script src="https://libs.cartocdn.com/carto-vl/v1.1.1/carto-vl.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase-auth.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131292688-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131292688-1');
+</script><meta name="google-site-verification" content="wUGXCNe74cJtu6A-gCJhyEkbT_jRrK7McoKIZpMWu5E" /><meta name="description" content="Explore inequality of places, not neighborhoods, using a tool developed at the MIT Media Lab."/></head>
+
+<body class="as-app-body on-map">
+    <div class="as-app onboarding">
+        <header class="as-toolbar hide-in-onboarding">
+            <div href="#" class="as-toolbar__item logo"><img src="https://d33wubrfki0l68.cloudfront.net/9a53347a1844996a7f77e24a267d51bb3690f96f/702af/img/atlas-of-inequality@2x.png" width="122" height="36" alt="atlas of inequality" /></div>
+            <button class='as-toolbar__item as-toolbar__toggle js-burger'>
+                <i class='as-icon-hamburguer as-title as-m--0'></i>
+            </button>
+            <nav class="as-toolbar__actions">
+                <ul>
+                    <li>
+                        <a href="#" data-help="A" class="as-toolbar__item selected js-lightbox-selector">Map</a>
+                    <li>
+                        <a href="#" class="as-toolbar__item js-lightbox-selector" data-lightbox="#methods-lightbox">Methods</a>
+                    </li>
+                    <li>
+                        <a href="#" class="as-toolbar__item js-lightbox-selector" data-lightbox="#research-lightbox">Research</a>
+                    </li>
+                    <li>
+                        <a href="#" class="as-toolbar__item js-lightbox-selector" data-lightbox="#stories-lightbox">Stories</a>
+                    </li>
+                    <li>
+                        <a href="#" class="as-toolbar__item js-lightbox-selector" data-lightbox="#about-lightbox">About</a>
+                    </li>
+                    <li>
+                        <a href="#" class="as-toolbar__item js-lightbox-selector" data-lightbox="#faq-lightbox">FAQ</a>
+                    </li>
+                    <li>
+                        <a href="#" class="as-toolbar__item help-item js-show-help">
+                            <img class="help-close-icon" src="https://d33wubrfki0l68.cloudfront.net/e083ff1dc78dc5b3d9ba5c1ed5cbfd94cd9e3b1e/7bae0/img/help-close.svg" />
+                            <img class="help-icon" src="https://d33wubrfki0l68.cloudfront.net/76937c75fedfadc16f9ed206424896f2b4161031/dafaf/img/help.svg" />
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <div>
+            <div id="onboarding-container" class="modal-lightbox show-in-onboarding">
+                <div class="modal-lightboxInner">
+                    <div id="onboarding-01" class="modal is-active js-goto">
+                        <div class="modal-content">
+                            <div class="heading">
+                                <img src="https://d33wubrfki0l68.cloudfront.net/9a53347a1844996a7f77e24a267d51bb3690f96f/702af/img/atlas-of-inequality@2x.png" alt="atlas of inequality" width="200" height="60" />
+                            </div>
+                            <h3>Economic inequality isn't just limited to
+                            neighborhoods. The restaurants, stores, and other
+                            places we visit in cities are all unequal in their
+                            own way.</h3>
+                            <p></p>
+                            <p>The <span class="bold"> Atlas of Inequality</span>
+                              shows the income inequality of people who visit
+                              different places in the Boston metro area. It
+                              uses aggregated anonymous location data from
+                              digital devices to estimate people's incomes and
+                              where they spend their time.
+
+                              <!-- shows how likely you are to see people from
+                                   different income groups in places around the
+                                   Boston metro area.  It uses aggregated anonymous
+                                   location data from digital devices to estimate
+                                   people's incomes and where they spend their time.-->
+                            </p>
+                            <p>
+                              Using that data, we've made our own <span class="color bold">place inequality</span>
+                              metric to capture how unequal the incomes of
+                              visitors to each place are. <span class="bold"> Economic
+                              inequality isn't just limited to neighborhoods,
+                              it's part of the places you visit every day.</span></p>
+                            <button class="as-btn as-btn--primary as-btn--l" data-goto="#onboarding-02">
+                                <i aria-hidden class="as-icon-arrow-right"></i>
+                                <span>Start exploring places</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="onboarding-02" class="modal js-goto modal-step2">
+                        <div class="modal-content step-02">
+                            <div class="heading">
+                                <h1>How it works</h1>
+                            </div>
+                            <div class="quick-intro">
+                                <li>
+                                  <div class="image-cont"><img src="https://d33wubrfki0l68.cloudfront.net/22ddb0725919b548a9651d1991c63ab8abcbefb7/485c6/img/1_intro_uno_new_transparent.png" width="152" height="146"></div>
+                                  <h3>Finding places</h3>
+                                    <p>The Atlas of Inequality shows the places
+                                    that people visit most often in cities using
+                                    anonymous aggregated location data. These
+                                    places include coffee shops, movie theaters,
+                                    stores, restaurants, and more.
+                                    </p>
+                                </li>
+                                <li>
+                                  <div class="image-cont"><img src="https://d33wubrfki0l68.cloudfront.net/d0f2eacbff1562ee4f5b8a2bed231829985a7033/ca1fe/img/2_intro_dos_new_transparent.png" width="157" height="147"></div>
+                                  <h3>The people</h3>
+                                    <p>Each place in a city has visitors from
+                                    different socioeconomic backgrounds. For
+                                    example, a coffee shop might get visitors
+                                    that are mainly lower-income students, a
+                                    boutique store might see mostly high-income
+                                    customers, and a burrito place downtown might
+                                    get people from all different backgrounds. </p>
+                                </li>
+                                <li>
+                                  <div class="image-cont"><img src="https://d33wubrfki0l68.cloudfront.net/1586935470b5a01609555d0775667c365cf4904a/96f96/img/3_intro_tres_new_transparent.png" width="161" height="146"></div>
+                                  <h3>Place inequality</h3>
+                                  <p>Our measure of <span class="color">place inequality</span> measures
+                                  how similar the incomes of those visitors are.
+                                  Each dot on the map is a place. More blue
+                                  places see diverse visitors, while red places
+                                  are more unequal. Click on a place to see a
+                                  chart showing our place inequality metric and
+                                  how much time people from different income
+                                  groups spend there.</p>
+                                </li>
+                            </div>
+                            <div class="modal-ui">
+                                <div class="as-checkbox">
+                                    <input class="as-checkbox-input" type="checkbox" id="hide-onboarding" name="checkbox-0" value="checkbox-0">
+                                    <span class="as-checkbox-decoration">
+                                        <svg class="as-checkbox-media">
+                                            <polyline class="as-checkbox-check" points="1.65093994 3.80255127 4.48919678 6.97192383 10.3794556 0.717346191"></polyline>
+                                        </svg>
+                                    </span>
+                                    <label class="as-caption" for="hide-onboarding"> Do not show this window again</label>
+                                </div>
+                                <button class="as-btn as-btn--primary as-btn--l js-remove-onboarding">
+                                    <i aria-hidden class="as-icon-arrow-right"></i>
+                                    <span>Go to map</span>
+                                </button>
+                            </div>
+                            <div class="carousel-controls">
+                                <i class="as-icon-chevron-left disabled js-carousel-left"></i>
+                                <i class="as-icon-chevron-right js-carousel-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="methods-lightbox" class="section-lightbox js-lightbox">
+                <div class="section-content method-section">
+                    <div class="heading">
+                      <h1>Methods</h1>
+                      <p>How do we calculate place inequality?</p>
+                      <div class="separator">
+                        </div>
+                    </div>
+                    <ol>
+                        <li>
+                            <h2>Data</h2>
+                            <p>Our anonymous data contains billions of visits to
+                              locations in the Boston Metro Area from October
+                              2016 to March 2017. We analyze mobility patterns of about 150,000 anonymous users, provided through <a href="https://www.cuebiq.com/about/data-for-good/">Cuebiq’s Data for Good initiative</a>, in the whole Boston Metro area (around 3% of the population). MIT Media Lab coupled Cuebiq's anonymous location data with census information to determine user income groups and identify user visitation patterns to places.
+                              We use the census-based <a href="https://en.wikipedia.org/wiki/Core-based_statistical_area" title="Wikipedia Core-based statistical areas">core-based statistical areas</a>
+                              to define metro areas. This definition encompasses
+                              the cities, suburbs, and commuting zones that are
+                              economically tied to a central city of interest.
+                              In the Boston case, it contains large areas in New
+                              Hampshire and down the Massachusetts coast.
+							  Finally, we have used the public Foursquare API to get the list of the 30,000 places that users visit.</p>
+                        </li>
+                        <li>
+                            <h2>Estimating home and income</h2>
+                            <p>Using the same anonymous data, we determine
+                              users’ home location at the level of <a href="https://en.wikipedia.org/wiki/Census_block_group" title="Wikipedia Census Block Group">Census Block Groups</a>,
+                              a statistical subarea of census tracts that each
+                              contain between 600 and 3,000 people. To determine
+                              a user's home census block group, we compute the
+                              most common block group that a user spends time in
+                              between 8:00 pm and 4:00 am. We then assign each
+                              user an income using the median household income
+                              of their "home" census block group from the 5-year <a href="https://www.census.gov/programs-surveys/acs/" title="American Community Survey">American Community Survey</a> for 2012-2016.
+                              Users were then clustered in 4 different quantile
+                              groups of annual income: low ($10,000 - $67,000),
+                              medium ($67,000 - $90,000), upper medium ($90,000 - $114,000),
+                              and high (over $114,000). Each income group
+                              contains exactly 1/4 of the users in our dataset.
+                            </p>
+                            <img class="figure" src="https://d33wubrfki0l68.cloudfront.net/36da083a874258b39e3a90160e90c2cb9936d6ed/7d18e/img/methods-02.png" width=80%>
+                        </li>
+                        <li>
+                            <h2>Detecting where people visit</h2>
+                            <p>Using location data as described above, we determine when
+                            users stop for more than 5 minutes in a particular
+                            place. If a user stops for more than 5 minutes
+                            within 20 meters from a place,
+                            we treat them as having visited that place.
+                            </p>
+                            <figure>
+                                <img class="figure" src="https://d33wubrfki0l68.cloudfront.net/da9d219a681d3f882fb12021c2c765b58d2be62f/4feef/img/methods-03.png">
+                                <figcaption>We consider a user as having visited
+                                  a place if they stop within 20 meters of its
+                                  location for more than 5 minutes.</figcaption>
+                            </figure>
+                            <p>We consider a user as having visited
+                              a place if they stop within 20 meters of its
+                              location for more than 5 minutes</p>
+                        </li>
+                        <li>
+                            <h2>Measuring inequality in a place</h2>
+                            <p>To measure inequality in a place, we first
+                              compute the total time each user spends in a
+                              venue, and then sort all users by their income
+                              group. Then, we compute the total time each income
+                              group spends in each place in our dataset. The end
+                              result is a chart for each place that shows how
+                              likely you are to see people from each income
+                              quartile if you visit.
+                            </p>
+                            <img class="figure" src="https://d33wubrfki0l68.cloudfront.net/c56a2d2a99db0be52ec57c74ce3a20223301ddb2/3f01b/img/methods-04-a.png">
+                            <p> To measure the inequality of a place, we use a
+                              city-wide normalized measure. Because income
+                              groups correspond to exactly 25% of the users in
+                              the area, a totally equal place would be visited
+                              by each income group 25% of the time. This
+                              corresponds to a flat chart, like the one on the
+                              left. We consider any deviation from that flat
+                              profile to contribute to inequality. For example,
+                              a totally segregated place would show a chart more
+                              like the one on the right, with 100% of the users
+                              coming from a single income group. Mathematically,
+                              we calculate the absolute deviation of a place's
+                              income distribution from that flat ideal:
+                            </p>
+                            <img class="figure" src="https://d33wubrfki0l68.cloudfront.net/a5e82b545472a742eea9fc11db8b5a66dc521ab9/bd4a7/img/methods-04-b.png">
+                            <p>and normalize it to be between 0% (flat
+                            distribution) to 100% (only one group is present).</p>
+                        </li>
+                        <li>
+                            <h2>Limitations</h2>
+                            <p>There are several limitations with our approach
+                            that could mean our results are incomplete. First,
+                            we select users based on having consistent home
+                            locations during the 6 months of our dataset. This
+                            excludes smartphone users who are homeless, in
+                            transition, or those users who work non-normative
+                            work shifts (between 8pm and 4am). Second, the venues
+                              we consider are limited to those available via the
+                              Foursquare API. Third, our approach to determing
+                              whether a user visits a place does not account for
+                              GPS noise, and so some of our records of users
+                              visiting places could be wrong. See the FAQ for
+                              more about data representativeness.
+                            </p>
+                            <p>
+                              Additionally, it is important to note that the
+                              Atlas records income inequality, not class
+                              inequality. The lowest income quantile we use
+                              encompasses a huge range of both income and
+                              socioeconomic difference, covering neighborhoods
+                              with median household incomes between $10,000 and
+                              $67,000 per year. The qualitative class
+                              differences
+                              (lifestyle, opportunity, etc) between a household
+                              with $20,000 of annual income and $60,000 of
+                              annual income are extremely large in the Boston
+                              area. Income is also known to be an imperfect
+                              proxy for class; many highly wealthy households
+                              have little annual income.
+                            </p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div id="stories-lightbox" class="section-lightbox js-lightbox">
+                <div class="section-content storie-section">
+                    <div class="heading">
+                        <h1>Stories // Across the street</h1>
+                        <p>Places with economically diverse visitors can be only
+                          a few feet away from places where only the wealthiest
+                          spend their time. The way we experience economic
+                          inequality in cities is impacted by where we go, not just by where we live.
+                        <div class="separator">
+                        </div>
+                    </div>
+                    <p>When you want to grab a cup of coffee, where do you go?
+                    Does it depend on whether you’re at home or at work? How
+                    many other coffee shops do you pass on the way to your
+                    favorite spot?</p>
+                    <p>We all have our own preferences and needs -- like
+                    choosing a latte or a simple cup of black coffee. When we
+                    head out into our cities and towns, we use our preferences
+                    to decide where to spend our time. <b>Through these choices, we build our habits and routines.</b></p>
+                    <p>The fact that our routines decide where we spend our time
+                      also means that they decide who we spend our time with.
+                      Although we may get our daily coffee on the same city block, the specific
+                      places we're in -- and the people around us --
+                      can be radically different.
+                    </p>
+                    <img class="figure" src="https://d33wubrfki0l68.cloudfront.net/e04858bd2a6a20c0a0fd88e0cbe6d34727a44746/fbeb5/img/stories-01.png" width="617" height="355" alt="Map of two coffeehouses and different incomes" >
+                    <p>In Boston, like in other cities, coffee shops can occupy
+                    places as close as a few feet apart. The two coffee in the
+                    figure above are on the same city block. Although they are
+                    within 2 minute walk of one another, the incomes of the
+                    people who visit them are very different.</p>
+                    <p>Coffeehouse 2 is visited almost exclusively by people
+                    we’ve identified as being in Boston’s lowest income bracket,
+                    while Coffeehouse 1 has visitors more representative of all
+                    incomes. The choice of which coffee shop to visit can
+                    contribute significantly to income segregation.</p>
+                    <p>It’s important to note that these choices that people
+                    make are usually constrained by things like affordability,
+                    location, and social groups. But a place where people of all
+                    different incomes come together can be on the same block as
+                    a place where only the poorest -- or the wealthiest -- spend
+                    their time. This means that socio-economic inequality in
+                    cities is encoded in part by these choices, not just where
+                    people live.</p>
+                </div>
+            </div>
+            <div id="research-lightbox" class="section-lightbox js-lightbox">
+                <div class="section-content research-section">
+                    <div class="heading">
+                        <h1>Research</h1>
+                        <div class="separator"></div>
+                    </div>
+                    <h2>Papers</h2>
+                    <ul>
+                        <li>
+                            <h3>The segregated places of United States cities</h3>
+                            <p>E. Moro, D. Calacci, X. Dong, and A. Pentland,  forthcoming (2019).</p>
+                        </li>
+                    </ul>
+                    <h2>Talks</h2>
+                    <ul>
+                        <li>
+                            <h3>Overcoming urban isolation</h3>
+                            <p>Esteban Moro at <a href="#" title="Esteban Moro at TEDxCambridge" target="_blank">TEDxCambridge</a></p>
+                            <div class="iframe-wrapper">
+                                <iframe src="https://www.youtube.com/embed/KJHW9FTURlM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <h3>Cites at high resolution (in spanish)</h3>
+                            <p>Esteban Moro at BBVA Foundation, Demography today</p>
+                            <div class="iframe-wrapper">
+                                <iframe src="https://www.youtube.com/embed/FWlq9x0PN1A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="faq-lightbox" class="section-lightbox js-lightbox">
+                <div class="section-content faq-section">
+                    <div class="heading">
+                        <h1>FAQ</h1>
+                        <div class="separator"></div>
+                    </div>
+                    <h2>Places</h2>
+                    <ul>
+                        <li>
+                            <h3>How are the places selected?</h3>
+                            <p>The places are extracted using the Foursquare API. We have only considered places that are verified (claimed by the owners) or that have at least 5 check-ins within six months.To preserve the anonymity of users, we only consider places where we detected at least 20 different users within the six-month period.</p>
+                        </li>
+                        <li>
+                            <h3>There is a place I know that isn't included, why?</h3>
+                            <p>This could happen for many reasons: it might not
+                            be included in the public Foursquare API, or we might
+                            have discarded it for privacy or statistical
+                            reasons. If you know the actual location of the
+                            place, we can possibly include it! Please <a href="mailto:inequality@media.mit.edu?subject=Request%20for%20a%20new%20place" title="Send an email">send us an email</a> specifying the name of the place, its location, and any other details for us to add it to the atlas.</p>
+                        </li>
+                        <li>
+                            <h3>Is your data representative?</h3>
+                            <p>
+                              In general, yes. To test if our sample of users is
+                              representative, we’ve run several analyses
+                              comparing the incomes of people in our dataset to
+                              census reports, and the average income of our user
+                              sample is only 8.6% higher than the census data.
+                              To test if our method of detecting when a person
+                              spends time in a place is accurate, we use our
+                              data to estimate attendance at professional sports
+                              games (NFL, NBA, and the NHL). Estimates of
+                              attendance computed using our data are extremely
+                              close to official attendance counts, which suggests
+                              that the data we use here can describe visits to a
+                              specific place quite well (generally within a few thousand of the official attendance counts).
+                            </p>
+                        </li>
+                    </ul>
+                    <h2>Inequality</h2>
+                    <ul>
+                        <li>
+                            <h3>What do you mean when you say a place is “65% unequal”?</h3>
+                            <p>
+                              A place is unequal if it is not visited by the
+                              four different income quartiles we've identified
+                              in the city. A high value of inequality in a place
+                              means that most of its visitors come from one or
+                              two of these income groups. You can find more
+                              information about how the inequality score is
+                              computed in the Methods section.
+                            </p>
+                        </li>
+                        <li>
+                            <h3>I visit place X a lot, and know that X is more/less unequal than you reported, why?</h3>
+                            <p>We determine that a user has spent time in a
+                            place when our data shows that they’ve spent more
+                            than five minutes within 20 meters of it. We’ve
+                            tried our best to be careful in assigning user
+                            locations to places, but our method isn’t perfect.
+                            When places are very close to each other (less than 20 meters), or where places are on different floors of the same building, our data is a little more noisy. Please let us know about the specific place in question by <a href="mailto:inequality@media.mit.edu?subject=Problem%20with%20a%20place" title="Send an email" target="_blank">sending us an email</a>, and we will investigate it.
+                            </p>
+                        </li>
+                    </ul>
+                    <h2>Privacy</h2>
+                    <ul>
+                        <li>
+                            <h3>Where did you obtain the data about visits at locations? Is this legal?</h3>
+                            <p>
+                              The anonymous location data come from
+                              collaboration with Cuebiq through their Data for
+                              Good program. Cuebiq is a location intelligence
+                              company that collects data through its proprietary
+                              software-development-kit technology
+                              integrated in more than 200 mobile apps, reaching
+                              a diverse user base of millions of anonymous users
+                              who have opted in to share location data. Cuebiq
+                              is fully compliant with the GDPR in the EU; its
+                              privacy-compliant methodology is at the forefront
+                              of industry standards and has earned the company
+                              membership status with the Network Advertising
+                              Initiative (NAI),
+                              the leading industry association dedicated to
+                              responsible data collection and its use for
+                              digital advertising.
+                            </p>
+                        </li>
+                        <li>
+                            <h3>Are you singling out individuals?</h3>
+                            <p>No. We are not interested in individual behavior
+                              and are not using individual behavior in our
+                              analysis. We anonymize our data before analysis by
+                              aggregating by neighborhoods, and we are only
+                              interested in aggregated trends about the economic
+                              diversity of locations visited. Our final data
+                              consists of aggregations (counts) at
+                            the level of places, not individuals. To ensure
+                            privacy and help prevent de-anonymization and
+                            re-identification, we only consider places in which
+                            we detected at least 20 different users within the
+                            six-month period.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="about-lightbox" class="section-lightbox js-lightbox">
+                <div class="section-content about-section">
+                    <div class="heading">
+                        <h1>About</h1>
+                        <p>The Atlas of Inequality is a project from the Human
+                        Dynamics group at the <a href="https://www.media.mit.edu/" title="MIT Media Lab" target="_blank">MIT Media Lab</a> and the Department of Mathematics at <a href="http://www.uc3m.es/" title="Universidad Carlos III de Madrid" target="_blank">Universidad Carlos III de Madrid</a>.</p>
+                        <p>It is part of a broader initiative to understand
+                        human behavior in our cities and how large-scale
+                        problems like transportation, housing, segregation or
+                        inequality depend in part on the emergent patterns of
+                        people’s individual opportunities and choices.</p>
+                        <p>Comments, questions? <a href="mailto:inequality@media.mit.edu">Contact us by email</a></p>
+                        <div class="separator">
+                        </div>
+                    </div>
+                    <div>
+                        <h2>Principal Investigators:</h2>
+                        <ul>
+                            <li>
+                                <div>
+                                    <img src="https://d33wubrfki0l68.cloudfront.net/458e90b7824e339ebb616162d496b5110c498680/64618/img/about-esteban-moro.png" width="183" height="180" >
+                                    <p>Esteban Moro <a class="mailto" href="mailto:esteban.moroegido@gmail.com"><img src="https://d33wubrfki0l68.cloudfront.net/76a18e199fe4743088613fcc47f9519bbe3f8237/4843b/img/email_icon.svg" /></a><br /><a href="https://twitter.com/estebanmoro">@estebanmoro</a><br />MIT + UC3M</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="https://d33wubrfki0l68.cloudfront.net/4d178f171713f28e5c05949bce2edbffe64b2899/50b2a/img/about-alex-pentland.png" width="181" height="181" >
+                                    <p>Alex “Sandy” Pentland<br />MIT</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Researchers:</h2>
+                        <ul>
+                            <li>
+                                <div>
+                                    <img src="https://d33wubrfki0l68.cloudfront.net/6df40f73c407ed00118514297ecca17a0ecfcde5/be3fc/img/about-dan-calacci.png" width="181" height="179" >
+                                    <p>Dan Calacci<br /><a href="https://twitter.com/dcalacci">@dcalacci</a><br />MIT</p>
+
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="https://d33wubrfki0l68.cloudfront.net/d6bd2f3f9962b69e73da037967f6215f85388bb6/14e8d/img/about-xiaowen-dong.png" width="179" height="179" >
+                                    <p>Xiaowen Dong<br />MIT + Oxford</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="separator">
+                    </div>
+                    <div>
+                        <h2>Acknowledgments:</h2>
+                        <p>With thanks to:</p>
+                    </div>
+                    <ul class="acknowledgments">
+                        <li class="partner-section">
+                            <div class="image-container">
+                                <img src="https://d33wubrfki0l68.cloudfront.net/960f58b797a18a2bc5e007a573c3e71bac05cda2/cd19a/img/cuebiq-logo@2x.png" width="195" height="48" alt="cuebiq" >
+                            </div>
+                            <div class="description-container">
+                                <p>Cuebiq is a location intelligence and consumer insights company that maps and measures the offline consumer journey. Cuebiq's platform analyzes anonymous location patterns to allow researchers to glean actionable insights on human mobility. Through its <a href="https://www.cuebiq.com/about/data-for-good/" title="Data for Good Program" target="_blank">Data for Good Program</a>, Cuebiq provides access to location-based intelligence for academic research and humanitarian initiatives related to urban development, economic mobility, transportation, disaster response, and epidemiology, among other use cases.</p>
+                            </div>
+                        </li>
+                        <li class="partner-section">
+                            <div class="image-container">
+                                <img src="https://d33wubrfki0l68.cloudfront.net/2b9d289dc44fa00298773e361f6f9bd739fa5eb7/b0acd/img/carto-about-logo.svg" width="188" height="74" alt="CARTO" >
+                            </div>
+                            <div class="description-container">
+                                <p>From smartphones to connected cars, location data is changing the way we live and the way business happens. CARTO is the platform that turns location data into more efficient delivery routes, better behavioural marketing, strategic store placements, and much more. Business analysts, developers and data scientists use CARTO's software and data to understand where and why things happen, optimize business processes, and predict future outcomes.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <as-responsive-content class="as-app">
+            <main class="as-main">
+                <div class="as-map-area">
+                    <div id="map"></div>
+                    <div class="legend legend-panel js-legend hide-in-onboarding">
+                        <div class="widgets-item legend-inner">
+                            <h2 class="as-body as-font--medium legend-text">Inequality index</h2>
+                            <div class="segregation-legend as-mt--8"></div>
+                            <div class="labels-legend as-mt--4">
+                                <span class="as-caption">Very Equal</span>
+                                <span class="as-caption">Very Unequal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://carto.com/" class="floating-carto-logo" target="_blank"><img src="https://d33wubrfki0l68.cloudfront.net/2ca7b110f4639c3bbb5c74b6ca4ce0416a4053f8/35a30/img/carto-logo.svg" alt="CARTO" /></a>
+                    <div class="modal unsupported-browser-modal">
+                        <div class="modal-content">
+                            <h3 class="as-title">Your device is not supported</h3>
+                            <p></p>
+                            <p>
+                                Unfortunately, the Atlas of Inequality map cannot be displayed on your device.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <aside class="as-sidebar as-sidebar--right collapse-in-onboarding" data-name="Widgets">
+                <div class="as-container as-container--scrollable js-scroll">
+                    <section data-help="B" class="as-box" id="search-container">
+                    </section>
+                    <section data-help="C" class="as-box">
+                        <as-histogram-widget show-clear heading="Inequality distribution"></as-histogram-widget>
+                    </section>
+                    <section data-help="D" class="as-box">
+                        <as-switch label="Style by category" ></as-switch>
+                    </section>
+                    <section data-help="E" class="as-box">
+                        <as-category-widget heading="Store category" default-bar-color="#47DB99" show-clear-button="true"></as-category-widget>
+                    </section>
+                </div>
+            </aside>
+        </as-responsive-content>
+        <footer class="footer hide-in-onboarding">
+            <div class="orgs">
+                <a href="https://www.media.mit.edu/groups/human-dynamics/overview/" class="as-toolbar__item" target="_blank"><img src="https://d33wubrfki0l68.cloudfront.net/91f555da4bb714f0a605c8d15c4818ddc4416643/3ce45/img/human-dynamics-logo.svg" alt="human dynamics" /></a>
+                <a href="https://www.media.mit.edu/" class="as-toolbar__item" target="_blank"><img src="https://d33wubrfki0l68.cloudfront.net/40b33abc6e3bc979e9d59b8e72bee14e59e0e514/e1f0c/img/mit-logo.svg" alt="MIT media lab" /></a>
+                <a href="https://www.uc3m.es/Home" class="as-toolbar__item" target="_blank"><img src="https://d33wubrfki0l68.cloudfront.net/6b5ee28d3ab6d9bcb10892debca620f1056fbcaf/35afa/img/logo-uc3m@2x.png" width="44" height="14" alt="Universidad Carlos III" /></a>
+            </div>
+            <div class="social">
+                <a href="https://www.instagram.com/mitmedialab/?hl=en" target="_blank" class="as-toolbar__item"><img src="https://d33wubrfki0l68.cloudfront.net/101c5e5129051a365661cb23674184fef56ec35d/99787/img/instagram_icon.svg" alt="instagram" /></a>
+                <a href="https://twitter.com/share?text=The%20Atlas%20of%20Inequality&url=https%3a%2f%2finequality.media.mit.edu" target="_blank" class="as-toolbar__item"><img src="https://d33wubrfki0l68.cloudfront.net/289ad1795214c0b91d6fcb5cca0a28a5e78cc6e4/c2fff/img/twitter_icon.svg" alt="twitter" /></a>
+            </div>
+        </footer>
+    </div>
+
+    <div id="popup" v-bind:style="{ display: display }">
+        <div class="popup-name" v-if="details">
+          <span><h3>Category: </h3><h2>{{ cat }}</h2></span>
+          <span><h3>Name: </h3><h2>{{ name }}</h2></span>
+        </div>
+        <div class="popup-inner">
+            <span class="popup-status" v-bind:style="{ backgroundColor: color }"></span>
+            <div class="popup-figure">
+                <h2>{{ segregation }}%</h2>
+                <p>Place Inequality</p>
+            </div>
+            <ul class="popup-list">
+              <p class="popup-graph-title">Time Spent by Income</p>
+                <li class="popup-listItem">
+                    <div class="popup-listBar">
+                        <span v-bind:style="{ height: p1a + '%' }"></span>
+                    </div>
+                    <p>$</p>
+                </li>
+                <li class="popup-listItem">
+                    <div class="popup-listBar">
+                        <span v-bind:style="{ height: p2a + '%' }"></span>
+                    </div>
+                    <p>$$</p>
+                </li>
+                <li class="popup-listItem">
+                    <div class="popup-listBar">
+                        <span v-bind:style="{ height: p3a + '%' }"></span>
+                    </div>
+                    <p>$$$</p>
+                </li>
+                <li class="popup-listItem">
+                    <div class="popup-listBar">
+                        <span v-bind:style="{ height: p4a + '%' }"></span>
+                    </div>
+                    <p>$$$$</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="bubble-wrap" data-help-id="A">
+        <div class="with-bubble">
+            <div class="bubble-container bubble-container-header">
+                <div class="bubble-button">A</div>
+                <div class="bubble-info"><p>Browse Stories we’ve made from data we’ve curated, or explore the Map for yourself.</p><p>Learn more about the data, its privacy implications, and how we made the maps</p></div>
+            </div>
+        </div>
+    </div>
+    <div class="bubble-wrap" data-help-id="B">
+            <div class="with-bubble">
+                <div class="bubble-container bubble-container-sidebar">
+                    <div class="bubble-button">B</div>
+                    <div class="bubble-info">
+                            <p><strong>Search:</strong>You can search for a particular address here.</p>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="bubble-wrap" data-help-id="C">
+        <div class="with-bubble">
+            <div class="bubble-container bubble-container-sidebar">
+                <div class="bubble-button">C</div>
+                <div class="bubble-info">
+                        <p><strong>Inequality distribution:</strong>Distribution of place inequality in the current view. Select a range to show only places with certain level of inequality.</p></div>
+            </div>
+        </div>
+    </div>
+    <div class="bubble-wrap" data-help-id="D">
+        <div class="with-bubble">
+            <div class="bubble-container bubble-container-sidebar">
+                <div class="bubble-button">D</div>
+                <div class="bubble-info">
+                        <p><strong>Point style:</strong>Toggle between places colored by the segregation index or by place category (Shop & Service, Food, etc.)</p></div>
+            </div>
+        </div>
+    </div>
+    <div class="bubble-wrap" data-help-id="E">
+        <div class="with-bubble">
+            <div class="bubble-container bubble-container-sidebar">
+                <div class="bubble-button">E</div>
+                <div class="bubble-info">
+                        <p><strong>Place category:</strong>List with the number of places by category in the current view. Click on a category (or several) to select only places of that (or those) categories.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://libs.cartocdn.com/airship-components/v1.0.4-rc.4/airship.js"></script>
+
+    <script src='https://d33wubrfki0l68.cloudfront.net/bundles/2b79aa79c1dec3c30cd7cd7df34167d2449bfc87.js'></script>
+</body>
+</html>
